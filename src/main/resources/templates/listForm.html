@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        * {
+            margin: 0 auto;
+            padding: 0 auto;
+            overflow: hidden;
+        }
+        td, h2 {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h2>게시판 글 목록</h2>
+    <table width="500" cellpadding="0" cellspacing="0" border="1">
+        <tr>
+            <th>번호</th>
+            <th>이름</th>
+            <th>제목</th>
+            <th>내용</th>
+            <th>날짜</th>
+            <th>조회수</th>
+        </tr>
+       <tr th:each="dto:${list}">
+           <td th:text="${dto.board_idx}"></td>
+           <td>
+<!--               <a th:href="@{contentForm(board_idx=${dto.board_idx})">-->
+               <a th:href="@{contentForm(board_idx=${dto.board_idx})}">
+                   <span th:text="${dto.board_name}"></span></a>
+
+           </td>
+           <td>
+               <a th:href="@{contentForm(board_idx=${dto.board_idx})}">
+                   <span th:text="${dto.board_title}"></span></a>
+           </td>
+           <td th:text="${dto.board_content}"></td>
+           <td th:text="${#dates.format(dto.board_date, 'yyyy-MM-dd')}"></td>
+           <td th:text="${dto.board_hit}"></td>
+       </tr>
+
+        <tr>
+            <td colspan="5"><a th:href="@{/writeForm}">write</a></td>
+        </tr>
+    </table>
+</body>
+</html>

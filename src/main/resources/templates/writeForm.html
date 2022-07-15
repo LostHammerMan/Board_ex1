@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>글쓰기</title>
+</head>
+<body>
+   <h2>글쓰기</h2>
+
+    <form th:action="writeAction" method="post">
+        <table width="500" cellpadding="0" cellspacing="0" border="1">
+            <tr>
+                <td>이름</td>
+                <!-- input name : 서버에서 파라미터로 받을 부분-->
+                <td><input type="text" name="board_name" value="" size="50"></td>
+            </tr>
+            <tr>
+                <td>제목</td>
+                <td><input type="text" name="board_title" value="" size="50"></td>
+            </tr>
+            <tr>
+                <td>내용</td>
+                <td>
+<!--     textarea: 글 내용같이 많은 text 쓸경우-->
+                    <textarea rows="10" cols="60" name="board_content">
+
+                    </textarea>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    &nbsp;&nbsp;<input type="submit" value="글쓰기">&nbsp;&nbsp;
+                    <!-- submit -> writeAction-->
+                    <a th:href="@{listForm}"><input type="button" value="목록보기"></a>
+                </td>
+            </tr>
+
+        </table>
+    </form>
+</body>
+</html>

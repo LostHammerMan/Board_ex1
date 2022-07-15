@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- sql 문 뒤 세미클론 금지!! -->
+
+<mapper namespace="com.study.springboot.dao.IBoardDao"> <!-- namespce: 매핑할 인터페이스(DAO)의 위치 -->
+    <select id="list" resultType="com.study.springboot.dto.BoardDto">
+        select * from board order by board_date desc
+    </select>
+
+    <!-- insert의 기본타입은 int이므로, resultType 사용할 필요 없음-->
+    <insert id="write"> <!-- 성공시 1 리턴, 그외 0, -1 -->
+        insert into board (board_idx, board_name, board_title, board_content, board_date)
+        VALUES (board_seq.nextval, #{param1}, #{param2}, #{param3}, sysdate)
+    </insert>
+
+
+</mapper>
