@@ -3,18 +3,36 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
-    <style>
+    <title>게시판 목록 보기</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</head>
+<style>
         * {
             margin: 0 auto;
             padding: 0 auto;
             overflow: hidden;
+
         }
         td, h2 {
             text-align: center;
         }
-    </style>
-</head>
+
+        .line {
+            text-align: center !important;
+        }
+
+        .pagination {
+            padding-left: 400px;
+            padding-right: 400px;
+            text-align: center;
+        }
+
+
+</style>
+
 <body>
     <h2>게시판 글 목록</h2>
     <table width="500" cellpadding="0" cellspacing="0" border="1">
@@ -46,6 +64,94 @@
         <tr>
             <td colspan="5"><a th:href="@{/writeForm}">write</a></td>
         </tr>
+
+<!--        <tr >-->
+<!--            <td class="pagination">-->
+<!--                <div th:if="${pageMaker.prev}">>-->
+<!--                    <li class="paginate_button previous"><a th:href="@{#}">Previous</a></li>-->
+<!--                </div>-->
+
+<!--                <div th:each="num,iterStat: ${#numbers.sequence(pageMaker.startPage, pageMaker.endPage)}" th:class="number">-->
+<!--                    <li class="paginate_button"><a th:href="@{#}"><span th:text="${num}"></span></a></li>-->
+<!--                </div>-->
+
+<!--                <div th:if="${pageMaker.next}">-->
+<!--                    <li class="paginate_button next"><a th:href="@{#}">Next</a></li>-->
+<!--                </div>-->
+
+<!--            </td>-->
+<!--        </tr>-->
     </table>
+
+    <div class="pull-right">
+<!--        <td class="pagination">-->
+
+            <ul class="pagination">
+
+                <li class="paginate_button previous" th:if="${pageMaker.prev}"><a th:href="@{${pageMaker.startPage -1}}">Previous</a></li>
+
+                <li class="paginate_button ${pageMaker.cri.pageNum == num ? 'active' :''}"
+                    th:each="num,iterStat: ${#numbers.sequence(pageMaker.startPage, pageMaker.endPage)}">
+
+                    <a class="page-link" th:href="@{${num}}"><span th:text="${num}"></span></a>
+                </li>
+
+                <li class="paginate_button next" th:if="${pageMaker.next}"><a th:href="@{${pageMaker.endPage +1}}">Next</a></li>
+            </ul>
+
+<!--        </td>-->
+    </div>
+
+
+    <form id="actionForm" th:action="listForm" method="get">
+        <input type="hidden" th:name="pageNum" th:value="${pageMaker.cri.pageNum}">
+        <input type="hidden" th:name="amount" th:value="${pageMaker.cri.amount}">
+    </form>
+
+<!--    <div class="pull-right">-->
+<!--        <ul class="pagination">-->
+<!--            <th:block th:if="${pageMaker.prev}">-->
+<!--                <li class="paginate_button previous"><a th:href="@{#}">Previous</a></li>-->
+<!--            </th:block>-->
+
+<!--            <th:block th:each="num,iterStat: ${#numbers.sequence(pageMaker.startPage, pageMaker.endPage)}">-->
+<!--                <li class="paginate_button"><a th:href="@{#}"><span th:text="${num}"></span></a></li>-->
+<!--            </th:block>-->
+
+<!--            <th:block th:if="${pageMaker.next}">-->
+<!--                <li class="paginate_button next"><a th:href="@{#}">Next</a></li>-->
+<!--            </th:block>-->
+
+<!--        </ul>-->
+
+<!--    </div>-->
+<!-- end Pagination -->
+
+    <script th:inline="javascript">
+
+/* 웹 브라우저 back 키 누를때 페이지 재로딩 */
+
+
+ window.onpageshow = function(event){
+
+        if(event.persisted){
+            document.location.reload();
+        }
+
+    };
+
+var actionForm = $("#actionForm");
+
+$(".paginate_button a").on("click", function(e){
+    e.preventDefault(); // a태그의 기본동작 막음
+    console.log('click');
+
+    // <form> 태그의 내용 변경후 submit
+    actionForm.find("input[name='pageNum']").val($(this).attr("href"));
+
+    actionForm.submit();
+});
+
+</script>
 </body>
 </html>

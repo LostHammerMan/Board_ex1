@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- sql 문 뒤 세미클론 금지!! -->
+
+<mapper namespace="com.study.springboot.dao.IReplyDao"> <!-- namespce: 매핑할 인터페이스(DAO)의 위치 -->
+    <select id="reply_list" resultType="com.study.springboot.dto.ReplyDto">
+        select * from reply where  reply_board_idx=#{param1} order by reply_date desc
+    </select>
+
+    <!-- insert의 기본타입은 int이므로, resultType 사용할 필요 없음-->
+    <insert id="reply_write"> <!-- 성공시 1 리턴, 그외 0, -1 -->
+        insert into reply (reply_idx, reply_name, reply_content, reply_date, reply_board_idx)
+        VALUES (reply_board_seq.nextval, #{param1}, #{param2}, sysdate, #{param3})
+    </insert>
+
+    <delete id="reply_deleteDto">
+        delete from reply where reply_idx=#{param1}
+    </delete>
+
+
+
+
+
+</mapper>

@@ -15,5 +15,33 @@
         VALUES (board_seq.nextval, #{param1}, #{param2}, #{param3}, sysdate)
     </insert>
 
+    <select id="viewDto" resultType="com.study.springboot.dto.BoardDto">
+        select * from board where board_idx=#{param1}
+    </select>
 
+    <delete id="deleteDto">
+        delete from board where board_idx=#{param1}
+    </delete>
+
+    <update id="updateDto">
+        update board set
+        board_name=#{param2}, board_title=#{param3}, board_content=#{param4}
+        where board_idx=#{param1}
+    </update>
+
+    <update id="hit">
+        update board set board_hit=board_hit+1 where board_idx=#{param1}
+    </update>
+
+<!--  페이징  -->
+    <select id="getListWithPaging" resultType="com.study.springboot.dto.BoardDto">
+        <![CDATA[
+        select * from
+        (
+        select /*+ index_desc(board sys_c009974 ) */ rownum rn, board_idx, board_name, board_title, board_content, board_date
+        from board where board_idx > 0 and rownum > 0 and rownum <= (#{pageNum} * #{amount})
+        )
+        where rn > (#{pageNum}-1) * #{amount}
+        ]]>
+    </select>
 </mapper>
